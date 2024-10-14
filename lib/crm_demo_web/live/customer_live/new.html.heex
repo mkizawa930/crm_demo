@@ -1,0 +1,53 @@
+<div>
+  <.header>
+    <%= @title %>
+    <%!-- <:subtitle>Use this form to manage customer records in your database.</:subtitle> --%>
+  </.header>
+
+  <.simple_form for={@form} id="customer-form" phx-change="validate" phx-submit="save">
+    <div class="flex">
+      <.input
+        field={@form[:customer_type]}
+        name="customer-type"
+        type="select"
+        label="顧客種別"
+        prompt="個人か法人を選択してください"
+        options={[{"個人", "Individual"}, {"法人", "Corporation"}]}
+      />
+    </div>
+    <div class="flex flex-row space-x-4">
+      <div class="flex-1">
+        <.input field={@form[:first_name]} type="text" label="姓" />
+      </div>
+      <div class="flex-1">
+        <.input field={@form[:last_name]} type="text" label="名" />
+      </div>
+    </div>
+    <div class="flex flex-row space-x-4">
+      <div class="flex-1">
+        <.input field={@form[:first_name_kana]} type="text" label="姓(カナ)" />
+      </div>
+      <div class="flex-1">
+        <.input field={@form[:last_name_kana]} type="text" label="名(カナ)" />
+      </div>
+    </div>
+    <.input
+      field={@form[:gender]}
+      type="select"
+      label="性別"
+      prompt="性別を選択してください"
+      options={[{"男", "male"}, {"女", "female"}]}
+    />
+    <.input field={@form[:birth_date]} type="date" label="生年月日" />
+    <%!-- <.input field={@form[:is_active]} type="checkbox" label="Is active" /> --%>
+    <%!-- <.input field={@form[:deleted_at]} type="datetime-local" label="Deleted at" /> --%>
+    <:actions>
+      <div class="flex w-full justify-end space-x-4">
+        <.button class="bg-zinc-400" type="button" phx-click="cancel">
+          キャンセル
+        </.button>
+        <.button phx-disable-with="Saving...">登録</.button>
+      </div>
+    </:actions>
+  </.simple_form>
+</div>

@@ -1,0 +1,73 @@
+<.header>
+  顧客一覧
+  <:actions>
+    <.link patch={~p"/customers/new"}>
+      <.button>顧客登録</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<div>
+  <.form for={nil} class="my-4 w-full text-sm" phx-submit="search">
+    <div class="flex flex-col space-y-4">
+      <div class="flex flex-col flex-1 space-y-2">
+        <label class="font-bold">名前</label>
+        <input class="flex-1 rounded-lg text-sm" field="" type="text" name="keyword" value="" />
+      </div>
+      <div class="flex justify-end">
+        <button class="bg-blue-500 text-white px-4 py-2 rounded-lg font-bold">検索</button>
+      </div>
+    </div>
+  </.form>
+</div>
+
+<%= if Enum.count(@streams.customers) > 0 do %>
+  <div>hoge</div>
+  <.table
+    id="customers"
+    rows={@streams.customers}
+    row_click={fn {_id, customer} -> JS.navigate(~p"/customers/#{customer}") end}
+  >
+    <:col :let={{_id, customer}} label="Id"><%= customer.id %></:col>
+    <:col :let={{_id, customer}} label="種別"><%= nil %></:col>
+    <:col :let={{_id, customer}} label="名前"><%= nil %></:col>
+    <:col :let={{_id, customer}} label="性別"><%= nil %></:col>
+    <:col :let={{_id, customer}} label="生年月日"><%= nil %></:col>
+    <%!-- <:col :let={{_id, customer}} label="Is active"><%= customer.is_active %></:col> --%>
+    <%!-- <:col :let={{_id, customer}} label="Deleted at"><%= customer.deleted_at %></:col> --%>
+    <:action :let={{_id, customer}}>
+      <div class="sr-only">
+        <.link navigate={~p"/customers/#{customer}"}>Show</.link>
+      </div>
+      <.link patch={~p"/customers/#{customer}/edit"}>編集</.link>
+    </:action>
+    <:action :let={{id, customer}}>
+      <.link
+        phx-click={JS.push("delete", value: %{id: customer.id}) |> hide("##{id}")}
+        data-confirm="Are you sure?"
+      >
+        削除
+      </.link>
+    </:action>
+  </.table>
+<% else %>
+  <div>検索結果がありません</div>
+<% end %>
+
+
+<!--　作成などのモーダル -->
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="customer-modal"
+  show
+  on_cancel={JS.patch(~p"/customers")}
+>
+  <.live_component
+    module={CrmDemoWeb.CustomerLive.FormComponent}
+    id={@customer.id || :new}
+    title={@page_title}
+    action={@live_action}
+    customer={@customer}
+    patch={~p"/customers"}
+  />
+</.modal>

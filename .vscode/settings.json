@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "*.heex": "phoenix-heex"
+    },
+    "emmet.includeLanguages": {
+        "phoenix-heex": "heex",
+    },
+    "[phoenix-heex]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "JakeBecker.elixir-ls"
+    }
+}
