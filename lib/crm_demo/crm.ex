@@ -1,4 +1,4 @@
-defmodule CrmDemo.Crm do
+defmodule CrmDemo.Customers do
   @moduledoc """
   The Crm context.
   """
@@ -6,7 +6,8 @@ defmodule CrmDemo.Crm do
   import Ecto.Query, warn: false
   alias CrmDemo.Repo
 
-  alias CrmDemo.Crm.Customer
+  alias CrmDemo.Customers.Customer
+  alias CrmDemo.Customers.Profile
 
   @doc """
   Returns the list of customers.
@@ -19,10 +20,9 @@ defmodule CrmDemo.Crm do
   """
   def list_customers() do
     Customer
-    |> from(limit: 5)
     |> Repo.all()
+    |> Repo.preload(profiles: from(a in Profile, where: a.is_primary == true))
   end
-
 
   def list_customers_by_name(count \\ 5) do
     Customer
@@ -109,5 +109,10 @@ defmodule CrmDemo.Crm do
   """
   def change_customer(%Customer{} = customer, attrs \\ %{}) do
     Customer.changeset(customer, attrs)
+  end
+
+  @doc false
+  def change_profile(%Profile{} = profile, attrs \\ %{}) do
+    Profile.changeset(profile, attrs)
   end
 end

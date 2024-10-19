@@ -1,15 +1,14 @@
 defmodule CrmDemoWeb.CustomerLive.Index do
   use CrmDemoWeb, :live_view
 
-  alias CrmDemo.Crm
-  alias CrmDemo.Crm.Customer
+  alias CrmDemo.Customers
+  alias CrmDemo.Customers.Customer
 
   require Logger
 
   @impl true
   def mount(_params, _session, socket) do
-    customers = Crm.list_customers()
-    Logger.info("customers: #{customers}")
+    customers = Customers.list_customers()
     {:ok, stream(socket, :customers, customers)}
   end
 
@@ -22,7 +21,7 @@ defmodule CrmDemoWeb.CustomerLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "顧客情報編集")
-    |> assign(:customer, Crm.get_customer!(id))
+    |> assign(:customer, Customers.get_customer!(id))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -49,11 +48,10 @@ defmodule CrmDemoWeb.CustomerLive.Index do
     {:noreply, socket}
   end
 
-
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    customer = Crm.get_customer!(id)
-    {:ok, _} = Crm.delete_customer(customer)
+    customer = Customers.get_customer!(id)
+    {:ok, _} = Customers.delete_customer(customer)
 
     {:noreply, stream_delete(socket, :customers, customer)}
   end

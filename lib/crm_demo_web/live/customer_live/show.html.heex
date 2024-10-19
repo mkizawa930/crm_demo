@@ -1,9 +1,9 @@
 <.header>
-  Customer <%= @customer.id %>
-  <:subtitle>This is a customer record from your database.</:subtitle>
+  Customer <%= @customer.customer_number %>
+  <:subtitle></:subtitle>
   <:actions>
     <.link patch={~p"/customers/#{@customer}/show/edit"} phx-click={JS.push_focus()}>
-      <.button>Edit customer</.button>
+      <.button>編集</.button>
     </.link>
   </:actions>
 </.header>
@@ -13,9 +13,14 @@
   <:item title="Deleted at"><%= @customer.deleted_at %></:item>
 </.list>
 
-<.back navigate={~p"/customers"}>Back to customers</.back>
+<.back navigate={~p"/customers"}>顧客一覧へ戻る</.back>
 
-<.modal :if={@live_action == :edit} id="customer-modal" show on_cancel={JS.patch(~p"/customers/#{@customer}")}>
+<.modal
+  :if={@live_action == :edit}
+  id="customer-modal"
+  show
+  on_cancel={JS.patch(~p"/customers/#{@customer}")}
+>
   <.live_component
     module={CrmDemoWeb.CustomerLive.FormComponent}
     id={@customer.id}

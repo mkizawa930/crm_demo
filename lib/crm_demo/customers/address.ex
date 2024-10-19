@@ -1,4 +1,4 @@
-defmodule CrmDemo.Crm.Address do
+defmodule CrmDemo.Customers.Address do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -14,7 +14,7 @@ defmodule CrmDemo.Crm.Address do
   @doc false
   def changeset(address, attrs) do
     address
-    |> cast(attrs, [:zip_code, :prefecture, :city, :details])
-    |> validate_required([:zip_code, :prefecture, :city, :details])
+    |> cast(attrs, [:zipcode, :prefecture, :city, :details])
+    |> validate_required([:zipcode, :prefecture, :city, :details])
   end
 end

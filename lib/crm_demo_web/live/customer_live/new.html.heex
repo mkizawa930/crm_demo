@@ -1,21 +1,88 @@
-<div>
+<div class="mx-auto max-w-[900px]">
   <.header>
     <%= @title %>
     <%!-- <:subtitle>Use this form to manage customer records in your database.</:subtitle> --%>
   </.header>
 
-  <.simple_form for={@form} id="customer-form" phx-change="validate" phx-submit="save">
-    <div class="flex">
+  <.form :let={f} for={@changeset} phx-change="validate" phx-submit="save" class="py-4">
+    <div class="flex flex-col space-y-4">
+      <.inputs_for :let={p} field={f[:profiles]}>
+        <.input
+          field={p[:profile_type]}
+          type="select"
+          label="顧客種別"
+          options={[{"法人", :corporation}, {"個人", :individual}]}
+          required
+        />
+        <%!-- <input
+            type="hidden"
+            name="customer[profiles][0][profile_type]"
+            value={f.data.customer_type}
+          /> --%>
+        <%= case @profile_type do %>
+          <% "individual" -> %>
+            <.inputs_for :let={ip} field={p[:individual]}>
+              <div class="grid grid-cols-2 gap-4">
+                <.input field={ip[:first_name]} type="text" label="姓" />
+                <.input field={ip[:last_name]} type="text" label="名" />
+                <.input field={ip[:first_name_kana]} type="text" label="セイ" />
+                <.input field={ip[:last_name_kana]} type="text" label="メイ" />
+              </div>
+
+              <div class="grid grid-cols-2 gap-4">
+                <.input
+                  field={ip[:gender]}
+                  type="select"
+                  label="性別"
+                  prompt="性別を選択してください"
+                  options={[{"男", "male"}, {"女", "female"}]}
+                />
+                <.input field={ip[:birth_date]} type="date" label="生年月日" />
+              </div>
+            </.inputs_for>
+          <% "corporation" -> %>
+            <.inputs_for :let={cp} field={p[:corporation]}>
+              <.input field={cp[:corporation_name]} type="text" label="法人名" />
+              <.input field={cp[:corporation_name_kana]} type="text" label="法人名(カナ)" />
+              <%!-- <.input field={cp[:corporation_type]} type="text" label="法人種別" /> --%>
+            </.inputs_for>
+          <% _ -> %>
+        <% end %>
+        <%!-- <.inputs_for :let={a} field={p[:address]}>
+            <.input field={a[:zipcode]} label="郵便番号" />
+            <.input field={a[:prefecture]} label="県" />
+            <.input field={a[:city]} label="市" />
+            <.input field={a[:details]} label="区町村" />
+          </.inputs_for> --%>
+        <.input field={p[:email]} label="E-mail" />
+        <.input field={p[:phone_number]} type="tel" label="電話番号" />
+      </.inputs_for>
+    </div>
+    <div class="flex justify-end py-8 space-x-4">
+      <.button class="!bg-zinc-400" type="button" phx-click="cancel">
+        キャンセル
+      </.button>
+      <.button phx-disable-with="Saving...">登録</.button>
+    </div>
+  </.form>
+
+  <%!-- <.simple_form for={@form} id="customer-form" phx-change="validate" phx-submit="save"> --%>
+  <%!-- <div class="flex">
       <.input
         field={@form[:customer_type]}
-        name="customer-type"
         type="select"
         label="顧客種別"
         prompt="個人か法人を選択してください"
-        options={[{"個人", "Individual"}, {"法人", "Corporation"}]}
+        options={[{"個人", "individual"}, {"法人", "corporation"}]}
       />
-    </div>
-    <div class="flex flex-row space-x-4">
+    </div> --%>
+  <%!-- <div>
+      <div>
+        <.input field={@form[:profile]} type="text" label="E-mail" />
+      </div>
+    </div> --%>
+
+  <%!-- <div class="flex flex-row space-x-4">
       <div class="flex-1">
         <.input field={@form[:first_name]} type="text" label="姓" />
       </div>
@@ -30,24 +97,17 @@
       <div class="flex-1">
         <.input field={@form[:last_name_kana]} type="text" label="名(カナ)" />
       </div>
-    </div>
-    <.input
-      field={@form[:gender]}
-      type="select"
-      label="性別"
-      prompt="性別を選択してください"
-      options={[{"男", "male"}, {"女", "female"}]}
-    />
-    <.input field={@form[:birth_date]} type="date" label="生年月日" />
-    <%!-- <.input field={@form[:is_active]} type="checkbox" label="Is active" /> --%>
-    <%!-- <.input field={@form[:deleted_at]} type="datetime-local" label="Deleted at" /> --%>
-    <:actions>
+    </div> --%>
+
+  <%!-- <.input field={@form[:is_active]} type="checkbox" label="Is active" /> --%>
+  <%!-- <.input field={@form[:deleted_at]} type="datetime-local" label="Deleted at" /> --%>
+  <%!-- <:actions>
       <div class="flex w-full justify-end space-x-4">
         <.button class="bg-zinc-400" type="button" phx-click="cancel">
           キャンセル
         </.button>
         <.button phx-disable-with="Saving...">登録</.button>
       </div>
-    </:actions>
-  </.simple_form>
+    </:actions> --%>
+  <%!-- </.simple_form> --%>
 </div>

@@ -7,8 +7,9 @@
   </:actions>
 </.header>
 
-<div>
+<div class="border rounded-lg px-4 my-4">
   <.form for={nil} class="my-4 w-full text-sm" phx-submit="search">
+    <h2 class="font-bold my-4">顧客検索</h2>
     <div class="flex flex-col space-y-4">
       <div class="flex flex-col flex-1 space-y-2">
         <label class="font-bold">名前</label>
@@ -22,17 +23,17 @@
 </div>
 
 <%= if Enum.count(@streams.customers) > 0 do %>
-  <div>hoge</div>
   <.table
     id="customers"
     rows={@streams.customers}
     row_click={fn {_id, customer} -> JS.navigate(~p"/customers/#{customer}") end}
   >
-    <:col :let={{_id, customer}} label="Id"><%= customer.id %></:col>
-    <:col :let={{_id, customer}} label="種別"><%= nil %></:col>
+    <:col :let={{_id, customer}} label="ID"><%= customer.id %></:col>
+    <:col :let={{_id, customer}} label="顧客番号"><%= customer.customer_number %></:col>
+    <:col :let={{_id, customer}} label="種別">
+      <%= Enum.at(customer.profiles, 0).profile_type %>
+    </:col>
     <:col :let={{_id, customer}} label="名前"><%= nil %></:col>
-    <:col :let={{_id, customer}} label="性別"><%= nil %></:col>
-    <:col :let={{_id, customer}} label="生年月日"><%= nil %></:col>
     <%!-- <:col :let={{_id, customer}} label="Is active"><%= customer.is_active %></:col> --%>
     <%!-- <:col :let={{_id, customer}} label="Deleted at"><%= customer.deleted_at %></:col> --%>
     <:action :let={{_id, customer}}>
@@ -53,8 +54,6 @@
 <% else %>
   <div>検索結果がありません</div>
 <% end %>
-
-
 <!--　作成などのモーダル -->
 <.modal
   :if={@live_action in [:new, :edit]}

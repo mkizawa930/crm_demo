@@ -2,7 +2,7 @@ defmodule CrmDemoWeb.CustomerLiveTest do
   use CrmDemoWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import CrmDemo.CrmFixtures
+  import CrmDemo.CustomersFixtures
 
   @create_attrs %{is_active: true, deleted_at: "2024-10-05T13:23:00"}
   @update_attrs %{is_active: false, deleted_at: "2024-10-06T13:23:00"}

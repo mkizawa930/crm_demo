@@ -1,7 +1,7 @@
 defmodule CrmDemoWeb.CustomerLive.Show do
   use CrmDemoWeb, :live_view
 
-  alias CrmDemo.Crm
+  alias CrmDemo.Customers
 
   @impl true
   def mount(_params, _session, socket) do
@@ -13,7 +13,7 @@ defmodule CrmDemoWeb.CustomerLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:customer, Crm.get_customer!(id))}
+     |> assign(:customer, Customers.get_customer!(id))}
   end
 
   defp page_title(:show), do: "Show Customer"

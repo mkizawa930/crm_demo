@@ -1,8 +1,8 @@
-defmodule CrmDemo.Crm.IndividualProfile do
+defmodule CrmDemo.Customers.IndividualProfile do
   use Ecto.Schema
   import Ecto.Changeset
 
-  alias CrmDemo.Crm
+  alias CrmDemo.Customers
 
   schema "individual_profiles" do
     field :first_name, :string
@@ -12,8 +12,8 @@ defmodule CrmDemo.Crm.IndividualProfile do
     field :gender, Ecto.Enum, values: [:male, :female]
     field :birth_date, :date
 
-    belongs_to :profile, Crm.Profile
-    belongs_to :address, Crm.Address
+    belongs_to :profile, Customers.Profile
+    # belongs_to :address, Customers.Address
 
     timestamps(type: :utc_datetime)
   end
@@ -21,7 +21,7 @@ defmodule CrmDemo.Crm.IndividualProfile do
   @doc false
   def changeset(individual_profile, attrs) do
     individual_profile
-    |> cast(attrs, [])
+    |> cast(attrs, [:first_name, :last_name, :first_name_kana, :last_name_kana, :gender, :birth_date])
     |> validate_required([])
   end
 end

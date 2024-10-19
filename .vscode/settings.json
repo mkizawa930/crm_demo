@@ -5,6 +5,10 @@
     "emmet.includeLanguages": {
         "phoenix-heex": "heex",
     },
+    "[elixir]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "JakeBecker.elixir-ls"
+    },
     "[phoenix-heex]": {
         "editor.formatOnSave": true,
         "editor.defaultFormatter": "JakeBecker.elixir-ls"

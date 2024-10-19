@@ -4,7 +4,6 @@ defmodule CrmDemo.Repo.Migrations.CreateCustomers do
   def change do
     create table(:customers) do
       add :customer_number, :string, null: false
-      add :type, :string, null: false
       add :is_active, :boolean, default: true, null: false
       add :deleted_at, :naive_datetime
 

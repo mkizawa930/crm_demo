@@ -1,7 +1,7 @@
 defmodule CrmDemoWeb.CustomerLive.FormComponent do
   use CrmDemoWeb, :live_component
 
-  alias CrmDemo.Crm
+  alias CrmDemo.Customers
   require Logger
 
   @impl true
@@ -20,16 +20,6 @@ defmodule CrmDemoWeb.CustomerLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
-        <div class="flex">
-          <.input
-          field={@form[:customer_type]}
-          name="customer-type"
-          type="select"
-          label="顧客種別"
-          prompt="個人か法人を選択してください"
-          options={[{"個人", "Individual"}, {"法人", "Corporation"}]}
-          />
-        </div>
         <div class="flex flex-row space-x-4">
           <div class="flex-1">
             <.input field={@form[:first_name]} type="text" label="姓" />
@@ -46,15 +36,23 @@ defmodule CrmDemoWeb.CustomerLive.FormComponent do
             <.input field={@form[:last_name_kana]} type="text" label="名(カナ)" />
           </div>
         </div>
-          <.input field={@form[:gender]} type="select" label="性別" prompt="性別を選択してください" options={[{"男", "male"}, {"女", "female"}]} />
-          <.input field={@form[:birth_date]} type="date" label="生年月日" />
+        <.input
+          field={@form[:gender]}
+          type="select"
+          label="性別"
+          prompt="性別を選択してください"
+          options={[{"男", "male"}, {"女", "female"}]}
+        />
+        <.input field={@form[:birth_date]} type="date" label="生年月日" />
         <%!-- <.input field={@form[:is_active]} type="checkbox" label="Is active" /> --%>
         <%!-- <.input field={@form[:deleted_at]} type="datetime-local" label="Deleted at" /> --%>
         <:actions>
-        <div class="flex w-full justify-end space-x-4">
-          <.button class="bg-zinc-400" type="button"  phx-target={@myself} phx-click="cancel">キャンセル</.button>
-          <.button phx-disable-with="Saving...">登録</.button>
-        </div>
+          <div class="flex w-full justify-end space-x-4">
+            <.button class="bg-zinc-400" type="button" phx-target={@myself} phx-click="cancel">
+              キャンセル
+            </.button>
+            <.button phx-disable-with="Saving...">登録</.button>
+          </div>
         </:actions>
       </.simple_form>
     </div>
@@ -67,13 +65,13 @@ defmodule CrmDemoWeb.CustomerLive.FormComponent do
      socket
      |> assign(assigns)
      |> assign_new(:form, fn ->
-       to_form(Crm.change_customer(customer))
+       to_form(Customers.change_customer(customer))
      end)}
   end
 
   @impl true
   def handle_event("validate", %{"customer" => customer_params}, socket) do
-    changeset = Crm.change_customer(socket.assigns.customer, customer_params)
+    changeset = Customers.change_customer(socket.assigns.customer, customer_params)
     {:noreply, assign(socket, form: to_form(changeset, action: :validate))}
   end
 
@@ -91,7 +89,7 @@ defmodule CrmDemoWeb.CustomerLive.FormComponent do
   end
 
   defp save_customer(socket, :edit, customer_params) do
-    case Crm.update_customer(socket.assigns.customer, customer_params) do
+    case Customers.update_customer(socket.assigns.customer, customer_params) do
       {:ok, customer} ->
         notify_parent({:saved, customer})
 
@@ -106,7 +104,7 @@ defmodule CrmDemoWeb.CustomerLive.FormComponent do
   end
 
   defp save_customer(socket, :new, customer_params) do
-    case Crm.create_customer(customer_params) do
+    case Customers.create_customer(customer_params) do
       {:ok, customer} ->
         notify_parent({:saved, customer})
 

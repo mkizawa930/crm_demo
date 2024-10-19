@@ -3,10 +3,10 @@ defmodule CrmDemo.Repo.Migrations.CreateAddresses do
 
   def change do
     create table(:addresses) do
-      add :zipcode, :string
-      add :prefecture, :string
+      add :zip_code, :string
+      add :state, :string
       add :city, :string
-      add :details, :text
+      add :street, :text
 
       timestamps(type: :utc_datetime)
     end

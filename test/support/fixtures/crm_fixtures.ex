@@ -1,7 +1,7 @@
-defmodule CrmDemo.CrmFixtures do
+defmodule CrmDemo.CustomersFixtures do
   @moduledoc """
   This module defines test helpers for creating
-  entities via the `CrmDemo.Crm` context.
+  entities via the `CrmDemo.Customers` context.
   """
 
   @doc """
@@ -14,7 +14,7 @@ defmodule CrmDemo.CrmFixtures do
         deleted_at: ~N[2024-10-05 13:23:00],
         is_active: true
       })
-      |> CrmDemo.Crm.create_customer()
+      |> CrmDemo.Customers.create_customer()
 
     customer
   end
