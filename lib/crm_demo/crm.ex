@@ -44,7 +44,10 @@ defmodule CrmDemo.Customers do
       ** (Ecto.NoResultsError)
 
   """
-  def get_customer!(id), do: Repo.get!(Customer, id)
+  def get_customer!(id) do
+    Repo.get!(Customer, id)
+    |> Repo.preload(:profiles)
+  end
 
   @doc """
   Creates a customer.

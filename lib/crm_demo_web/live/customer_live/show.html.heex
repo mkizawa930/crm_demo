@@ -1,5 +1,12 @@
+<div class="mb-8">
+  <.link navigate={~p"/customers"} class="">
+    <.icon name="hero-arrow-left-solid" class="h-3 w-3" />
+    <%= "顧客一覧へ戻る" %>
+  </.link>
+</div>
+
 <.header>
-  Customer <%= @customer.customer_number %>
+  顧客情報
   <:subtitle></:subtitle>
   <:actions>
     <.link patch={~p"/customers/#{@customer}/show/edit"} phx-click={JS.push_focus()}>
@@ -8,12 +15,26 @@
   </:actions>
 </.header>
 
-<.list>
-  <:item title="Is active"><%= @customer.is_active %></:item>
-  <:item title="Deleted at"><%= @customer.deleted_at %></:item>
-</.list>
+<ul class="flex flex-wrap text-sm border-b">
+  <%= for i <- 1..3 do %>
+    <li class="me-2">
+      <a href="#" class="inline-block p-4 hover:bg-gray-50 rounded-t-lg"><%= "Tab#{i}" %></a>
+    </li>
+  <% end %>
+</ul>
 
-<.back navigate={~p"/customers"}>顧客一覧へ戻る</.back>
+<.list>
+  <:item title="顧客番号"><%= @customer.customer_number %></:item>
+  <:item title="顧客種別">
+    <%= case Enum.at(@customer.profiles, 0).profile_type do %>
+      <% :individual -> %>
+        個人
+      <% :corporation -> %>
+        法人
+      <% _ -> %>
+    <% end %>
+  </:item>
+</.list>
 
 <.modal
   :if={@live_action == :edit}
